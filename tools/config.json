@@ -1,0 +1,11 @@
+{
+  "siteUrl": "https://spatikastro.in",
+  "appUrl": "https://spatikastro.in/",
+  "langs": [
+    "en",
+    "hi"
+  ],
+  "skipRoot": true,
+  "adsenseClient": "",
+  "adsenseSlot": ""
+}
