@@ -22,6 +22,19 @@ function voiceLang() {
   return LANG[nav] && nav !== "en" ? LANG[nav] : LANG.en;
 }
 
+/* the language the microphone listens in: chosen by the user ("I'll speak in"), else the chosen app language, else English.
+   Speech recognition cannot detect the language by itself, so this is never guessed from earlier questions
+   (a Hindi question followed by Malayalam speech used to be written out in Hindi letters). */
+const MIC_LANGS = ["en", "hinglish", "hi", "bn", "mr", "ta", "te", "kn", "ml", "gu", "pa", "or", "ur", "as", "ne"];
+const MIC_WEB = { en: "en-IN", hinglish: "en-IN", as: "as-IN", ne: "ne-NP", ur: "ur-IN", or: "or-IN" };
+function micLang() {
+  const m = store.get("micLang", "");
+  if (m && LANG[m]) return LANG[m];
+  if (state.lang !== "auto" && LANG[state.lang] && MIC_LANGS.includes(state.lang)) return LANG[state.lang];
+  return LANG.en;
+}
+const micWeb = L => MIC_WEB[L.code] || voiceInfo(L.code).web || "en-IN";
+
 /* opposite-gender voice: women hear a male astrologer, men a female one */
 function voiceGender(p) {
   const pref = store.get("voiceGender", "auto");
@@ -174,6 +187,7 @@ async function voiceAsk(text) {
   state.voiceTurn = true;
   await ask(text);
   state.voiceTurn = false;
+  { const M = micLang(); setMicNote(`Heard in ${M.native === M.name ? M.name : M.native}. Not what you said? Change "I'll speak in" above and try again.`); }
   const last = state.chat.slice(before).reverse().find(m => m.role === "assistant");
   if (last && !state.pending) {
     const r = await speakAnswer(last.content, last.lang);
@@ -183,7 +197,7 @@ async function voiceAsk(text) {
 }
 /* called straight from the Speak button's click */
 function micClick() {
-  const L = voiceLang(), vi = voiceInfo(L.code);
+  const L = micLang(), vi = voiceInfo(L.code);
   if (Voice.listening) { // second tap: finish
     if (Voice.rec && Voice.rec.stop) Voice.rec.stop();
     return;
@@ -194,7 +208,7 @@ function micClick() {
   if (VOICE_PROXY_URL && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     recordWav().then(rec => {
       Voice.rec = rec; Voice.listening = true; render(); setMicNote("Listening… tap Send when you finish.");
-      return rec.result.then(blob => { const f = new FormData(); f.append("file", blob, "q.wav"); f.append("lang", state.lang !== "auto" && vi.tts && L.code !== "hinglish" ? vi.tts : "unknown"); setMicNote("Understanding…"); return fetch(VOICE_PROXY_URL + "/stt", { method: "POST", body: f }); })
+      return rec.result.then(blob => { const f = new FormData(); f.append("file", blob, "q.wav"); f.append("lang", store.get("micLang", "") && vi.tts && L.code !== "hinglish" && L.code !== "en" ? vi.tts : "unknown"); setMicNote("Understanding…"); return fetch(VOICE_PROXY_URL + "/stt", { method: "POST", body: f }); })
         .then(r => r.json()).then(j => voiceAsk(j.text));
     }).catch(() => { Voice.listening = false; render(); setMicNote("Microphone permission is needed to speak your question."); });
     return;
@@ -212,12 +226,12 @@ function micClick() {
   // 3. the browser's own speech recognition
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SR) {
-    const r = new SR(); r.lang = vi.web || "hi-IN"; r.interimResults = true; r.continuous = false;
+    const r = new SR(); r.lang = micWeb(L); r.interimResults = true; r.continuous = false;
     let said = "";
     r.onresult = e => { said = Array.from(e.results).map(x => x[0].transcript).join(" "); const q = $("#q"); if (q) q.value = said; };
     r.onend = () => { if ($("#q")) $("#q").value = ""; voiceAsk(said); };
     r.onerror = () => { Voice.listening = false; render(); setMicNote("Could not hear you. Check microphone permission and try again."); };
-    Voice.rec = { stop: () => r.stop() }; Voice.listening = true; render(); setMicNote("Listening…");
+    Voice.rec = { stop: () => r.stop() }; Voice.listening = true; render(); setMicNote(`Listening in ${L.native === L.name ? L.name : L.native}…`);
     try { r.start(); } catch (e) { Voice.listening = false; render(); }
     return;
   }
@@ -230,6 +244,7 @@ function voicePanel() {
   const L = voiceLang(), cap = voiceCapability(L.code), pref = store.get("voiceGender", "auto");
   const sel = v => pref === v ? " selected" : "";
   return `<div class="vpanel">
+    <div class="vrow"><label for="miclang" class="muted">I'll speak in</label><select id="miclang" class="langsel">${MIC_LANGS.filter(c => LANG[c]).map(c => `<option value="${c}"${micLang().code === c ? " selected" : ""}>${LANG[c].native === LANG[c].name ? LANG[c].name : `${LANG[c].native} · ${LANG[c].name}`}</option>`).join("")}</select></div>
     <div class="vrow"><b>Voice</b>${cap === "none" ? `<span class="pill warn">Written answers only in ${L.native} on this device</span>` : ""}<span class="muted">${fmtMin(voiceLeftSec())} left this month</span></div>
     <details class="vset"><summary class="muted">Voice settings</summary><div class="vrow"><label for="vgender" class="muted">Voice</label><select id="vgender" class="langsel"><option value="auto"${sel("auto")}>Default</option><option value="female"${sel("female")}>Female</option><option value="male"${sel("male")}>Male</option></select></div></details>
   </div>`;

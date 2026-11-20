@@ -1566,6 +1566,7 @@ document.addEventListener("click", e => {
 document.addEventListener("change", e => {
   const t = e.target;
   if (t.id === "vgender") { store.set("voiceGender", t.value); render(); return; }
+  if (t.id === "miclang") { store.set("micLang", t.value); setMicNote && setMicNote(""); return; }
   if (t.id === "lang") { state.lang = t.value; store.set("lang", t.value); ensureAnswers().then(ok => ok && loadLangPack(t.value)); if (!state.chat.length) render(); else { const L = LANG[t.value]; state.chat.push({ role: "assistant", content: L ? `${L.hello}! I will answer in **${L.name}** (${L.native}). If you write or speak in another language, I will reply in that language.` : "I will reply in the language you type in." }); render(); } if (LANG[t.value] && state.kstyle === null) store.set("kstyle", null); return; }
   if (t.id === "profile-select") { state.active = +t.value; store.set("active", state.active); state.chat = []; state.pending = null; state.lastSubject = null; state.match = null; state.openMd = null; state.openAd = null; state.openPd = null; render(); }
   if (t.dataset.pick) {
