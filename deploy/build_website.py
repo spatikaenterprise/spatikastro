@@ -148,7 +148,7 @@ def icon(size, pad, path):
     d.line([pts[5], (c, c - h * .2), pts[1]], fill=(255, 255, 255, 200), width=lw); d.line([(c, c - h * .2), pts[3]], fill=(255, 255, 255, 160), width=lw)
     im.save(DOCS / "icons" / path)
 icon(512, 40, "icon-512.png"); icon(192, 15, "icon-192.png"); icon(512, 110, "maskable-512.png"); icon(64, 4, "favicon.png")
-(DOCS / "sw.js").write_text("""const CACHE = "spatik-v13";
+(DOCS / "sw.js").write_text("""const CACHE = "spatik-v14";
 const CORE = ["/", "/index.html", "/answers.js", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))); self.clients.claim(); });

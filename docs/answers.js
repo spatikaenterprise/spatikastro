@@ -241,7 +241,7 @@ const WHEN_RE = {
   nowadays: wordRe(["aaj kal", "aajkal", "aaj-kal", "these days", "nowadays"], ["आजकल", "आज कल", "আজকাল", "આજકાલ", "ਅੱਜਕੱਲ੍ਹ", "آج کل"]),
   birthday: wordRe(["birthday", "bday", "b'day", "janmdin", "janamdin", "janmadin", "janam din", "janm din"], ["जन्मदिन", "जन्मदिवस", "जन्म दिन", "वाढदिवस", "জন্মদিন", "জন্মদিনে", "જન્મદિવસ", "જન્મદિન", "ਜਨਮਦਿਨ", "ଜନ୍ମଦିନ", "பிறந்தநாள்", "பிறந்த நாள்", "పుట్టినరోజు", "ಹುಟ್ಟುಹಬ್ಬ", "ಜನ್ಮದಿನ", "പിറന്നാൾ", "ജന്മദിന", "سالگرہ"]),
   dayafter: wordRe(["day after tomorrow", "parso", "parson", "parsoon", "parsun"], ["परसों", "परसो", "परवा", "पर्सि", "পরশু", "পৰহিলৈ", "પરમ દિવસે", "પરમદિવસે", "ਪਰਸੋਂ", "ପରଶୁ", "நாளை மறுநாள்", "நாளைமறுநாள்", "ఎల్లుండి", "ನಾಡಿದ್ದು", "മറ്റന്നാൾ", "پرسوں"]),
-  tomorrow: wordRe(["tomorrow", "tmrw", "tmr", "kal", "kl", "kaal"], ["कल", "उद्या", "भोलि", "আগামীকাল", "কাল", "কালকে", "কাইলৈ", "આવતીકાલે", "આવતીકાલ", "કાલનો", "કાલની", "કાલનું", "કાલ", "આવતી કાલે", "કાલે", "ਕੱਲ੍ਹ", "ਕੱਲ", "ਭਲਕੇ", "କାଲି", "நாளை", "రేపు", "ನಾಳೆ", "നാളെ", "کل"]),
+  tomorrow: wordRe(["tomorrow", "tommorow", "tomorow", "tmrw", "tmr", "kal", "kl", "kaal", "kalka", "kalki", "kalke", "kalko", "kaalka", "klka", "kalwala", "kal wala"], ["कल", "उद्या", "भोलि", "আগামীকাল", "কাল", "কালকে", "কাইলৈ", "આવતીકાલે", "આવતીકાલ", "કાલનો", "કાલની", "કાલનું", "કાલ", "આવતી કાલે", "કાલે", "ਕੱਲ੍ਹ", "ਕੱਲ", "ਭਲਕੇ", "କାଲି", "நாளை", "రేపు", "ನಾಳೆ", "നാളെ", "کل"]),
   today: wordRe(["today", "tonight", "this evening", "this morning", "this afternoon", "aaj", "aj", "aaj raat"], ["आज", "आजच", "আজ", "আজি", "આજે", "આજનો", "આજની", "આજનું", "આજ", "ਅੱਜ", "ଆଜି", "இன்று", "இன்றைக்கு", "ఈరోజు", "ఈ రోజు", "నేడు", "ಇಂದು", "ಇವತ್ತು", "ഇന്ന്", "آج"]),
   weekend: wordRe(["this weekend", "weekend", "week end", "is weekend"], ["वीकेंड", "सप्ताहांत", "সপ্তাহান্তে", "সপ্তাহান্ত", "વીકએન્ડ", "ਵੀਕਐਂਡ", "வார இறுதி", "వారాంతం", "ವಾರಾಂತ್ಯ", "വാരാന്ത്യ", "ویک اینڈ"]),
   nextWeek: wordRe(["next week", "agle hafte", "agle week", "agle saptah", "coming week", "agla hafta", "next wk"], ["अगले हफ्ते", "अगले हफ़्ते", "अगले सप्ताह", "आने वाले हफ्ते", "आने वाले सप्ताह", "पुढच्या आठवड्यात", "पुढील आठवड्यात", "पुढच्या आठवड्यात", "अर्को हप्ता", "आगामी हप्ता", "আগামী সপ্তাহে", "পরের সপ্তাহে", "আগামী সপ্তাহ", "অহা সপ্তাহত", "આવતા અઠવાડિયે", "આવતા સપ્તાહે", "ਅਗਲੇ ਹਫ਼ਤੇ", "ਅਗਲੇ ਹਫਤੇ", "ଆସନ୍ତା ସପ୍ତାହ", "அடுத்த வாரம்", "వచ్చే వారం", "ಮುಂದಿನ ವಾರ", "അടുത്ത ആഴ്ച", "اگلے ہفتے"]),
@@ -250,6 +250,7 @@ const WHEN_RE = {
   thisMonth: wordRe(["this month", "is mahine", "iss mahine", "is month", "iss month"], ["इस महीने", "इस माह", "इसी महीने", "या महिन्यात", "ह्या महिन्यात", "यो महिना", "এই মাসে", "এই মাহত", "આ મહિને", "ਇਸ ਮਹੀਨੇ", "ଏହି ମାସ", "இந்த மாதம்", "ఈ నెల", "ಈ ತಿಂಗಳು", "ഈ മാസം", "اس مہینے"]),
   next: wordRe(["next", "agle", "agla", "coming", "aane wale", "upcoming"], ["अगले", "अगला", "आने वाले", "पुढच्या", "पुढील", "आगामी", "আগামী", "পরের", "આવતા", "ਅਗਲੇ", "ଆସନ୍ତା", "அடுத்த", "వచ్చే", "ಮುಂದಿನ", "അടുത്ത", "اگلے"]),
 };
+const DAY_GENERIC = wordRe(["din kaisa", "din kesa", "din kaise", "din kaisi", "din acha", "din achha", "din accha", "din theek", "my day", "the day go", "day go", "day be", "day look", "day going", "dinam", "divas kasa"], ["दिन कैसा", "दिन कैसे", "दिन कैसी", "दिन अच्छा", "दिवस कसा", "दिवस कसे", "दिन कस्तो", "দিন কেমন", "দিনটো কেনে", "দিনটো কেনেকুৱা", "દિવસ કેવો", "દિવસ કેવી", "ਦਿਨ ਕਿਵੇਂ", "ਦਿਨ ਕਿਹੋ", "ଦିନ କିପରି", "நாள் எப்படி", "రోజు ఎలా", "ದಿನ ಹೇಗೆ", "ದಿನ ಹೇಗಿರುತ್ತೆ", "ദിവസം എങ്ങനെ", "دن کیسا", "دن کیسے"]);
 const WEEKDAY_LATIN = [["sunday", "ravivar", "raviwar", "itvar", "itwar", "etvar", "aitvaar", "itvaar"], ["monday", "somvar", "somwar", "somvaar"], ["tuesday", "mangalvar", "mangalwar", "mangalvaar"], ["wednesday", "budhvar", "budhwar", "budhvaar"], ["thursday", "guruvar", "guruwar", "brihaspativar", "veervar", "guruvaar"], ["friday", "shukravar", "shukrawar", "shukravaar"], ["saturday", "shanivar", "shaniwar", "shanivaar"]];
 const WEEKDAY_NATIVE = [
   ["रविवार", "इतवार", "आइतबार", "রবিবার", "দেওবাৰ", "રવિવાર", "ਐਤਵਾਰ", "ରବିବାର", "ஞாயிற்றுக்கிழமை", "ఆదివారం", "ಭಾನುವಾರ", "ರವಿವಾರ", "ഞായറാഴ്ച", "اتوار کو", "اتوار کا", "اتوار کے", "اتوار کی", "ৰবিবাৰ"],
@@ -338,6 +339,8 @@ function parseWhen(q, p) {
   if (WHEN_RE.thisWeek.test(s)) { const w = wdOf(today), sun = addDays(today, (7 - w) % 7); return { kind: "range", from: today, to: sun === today ? addDays(today, 6) : sun, tag: "thisweek" }; }
   if (WHEN_RE.nextMonth.test(s)) { const y = tm === 12 ? ty + 1 : ty, mo = tm % 12; const last = new Date(Date.UTC(y, mo + 1, 0)).getUTCDate(); return { kind: "range", from: mkDs(y, mo, 1), to: mkDs(y, mo, last), tag: "nextmonth" }; }
   if (WHEN_RE.thisMonth.test(s)) { const last = new Date(Date.UTC(ty, tm, 0)).getUTCDate(); const to = mkDs(ty, tm - 1, last); return { kind: "range", from: today, to: to === today ? addDays(today, 6) : to, tag: "thismonth" }; }
+  /* "how will my day be" with no date named: answer for today */
+  if (DAY_GENERIC.test(s)) return { kind: "day", ds: today, tag: "today" };
   return null;
 }
 
